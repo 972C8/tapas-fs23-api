@@ -1,0 +1,80 @@
+asyncapi: '2.6.0'
+info:
+  title: TAPAS Interoperability Standard
+  version: 1.0.0
+servers:
+  development:
+    url: localhost
+    description: "Development broker"
+    protocol: mqtt
+    protocolVersion: '3.1.1'
+  production:
+    url: broker.hivemq.com
+    description: "Production broker"
+    protocol: mqtt
+    protocolVersion: '3.1.1'
+channels:
+  ch/unisg/tapas/auctions:
+    subscribe:
+      summary: Subscribe to auction
+      message:
+        $ref: '#/components/messages/Auction'
+    publish:
+      summary: Publish auction
+      message:
+        $ref: '#/components/messages/Auction'
+  ch/unisg/tapas/auctions/{auctionId}/bids:
+    parameters:
+      auctionId:
+        $ref: '#/components/parameters/auctionId'
+    subscribe:
+      summary: Receive Bid
+      message:
+        $ref: '#/components/messages/Bid'
+    publish:
+      summary: Place Bid
+      message:
+        $ref: '#/components/messages/Bid'
+components:
+  parameters:
+    auctionId:
+      description: "Identifier for the auction"
+      schema:
+        $ref: '#/components/schemas/auctionId'
+  schemas:
+    auctionId:
+      type: string
+      description: "Identifies the specific auction, should be globally unique"
+    bidderName:
+      type: string
+      description: "Represents the external entity's name in the format: 'tapas-group1'"
+    bidderAuctionHouseUri:
+      type: string
+      description: "Used to interact with the auction house of the bidder"
+    bidderTaskListUri:
+      type: string
+      description: "To delegate the task to the winner"
+    taskType:
+      type: string
+      description: "Identifies the type of the task to be executed"
+  messages:
+    Auction:
+      name: Auction
+      payload:
+        type: object
+        properties:
+          auctionId:
+            $ref: '#/components/schemas/auctionId'
+          taskType:
+            $ref: '#/components/schemas/taskType'
+    Bid:
+      name: Bid
+      payload:
+        type: object
+        properties:
+          bidderName:
+            $ref: '#/components/schemas/bidderName'
+          bidderAuctionHouseUri:
+            $ref: '#/components/schemas/bidderAuctionHouseUri'
+          bidderTaskListUri:
+            $ref: '#/components/schemas/bidderTaskListUri'
