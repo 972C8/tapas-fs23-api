@@ -57,12 +57,19 @@ components:
           deadline:
             type: integer
             description: "The deadline of the auction in ms after auction start. (e.g., 10'000 means 10s after the start of the auction)"
-          auctionStatus:
+          status:
             type: string
             enum:
             - OPEN
             - CLOSED
             description: "The status of the auction"
+        example:
+          auctionId: 7e7dd748-c633-4123-a5e4-0eda9de8404c
+          auctionHouseUri: https://tapas-auction-house.86-119-34-23.asse.scs.unisg.ch/
+          taskUri: https://tapas-tasks.86-119-34-23.asse.scs.unisg.ch/
+          taskType: BADMINTON
+          deadline: 10000
+          status: OPEN
     Bid:
       name: Bid
       payload:
@@ -79,3 +86,9 @@ components:
           bidderTaskListUri:
             type: string
             description: "The URI of the bidder's task list"
+        example:
+          auctionId: 7e7dd748-c633-4123-a5e4-0eda9de8404c
+          bidderName: tapas-group-1
+          bidderAuctionHouseUri: https://tapas-auction-house.86-119-34-23.asse.scs.unisg.ch/
+          bidderTaskUri: https://tapas-tasks.86-119-34-23.asse.scs.unisg.ch/
+
