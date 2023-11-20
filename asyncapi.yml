@@ -23,10 +23,7 @@ channels:
       summary: Publish auction
       message:
         $ref: '#/components/messages/Auction'
-  ch/unisg/tapas/auctions/{auctionId}/bids:
-    parameters:
-      auctionId:
-        $ref: '#/components/parameters/auctionId'
+  ch/unisg/tapas/auctions/bids:
     subscribe:
       summary: Receive Bid
       message:
@@ -36,11 +33,6 @@ channels:
       message:
         $ref: '#/components/messages/Bid'
 components:
-  parameters:
-    auctionId:
-      description: "Identifier for the auction"
-      schema:
-        $ref: '#/components/schemas/auctionId'
   schemas:
     auctionId:
       type: string
@@ -72,6 +64,8 @@ components:
       payload:
         type: object
         properties:
+          auctionId:
+            $ref: '#/components/schemas/auctionId'
           bidderName:
             $ref: '#/components/schemas/bidderName'
           bidderAuctionHouseUri:
