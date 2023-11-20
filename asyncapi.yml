@@ -36,19 +36,7 @@ components:
   schemas:
     auctionId:
       type: string
-      description: "Identifies the specific auction, should be globally unique"
-    bidderName:
-      type: string
-      description: "Represents the external entity's name in the format: 'tapas-group1'"
-    bidderAuctionHouseUri:
-      type: string
-      description: "Used to interact with the auction house of the bidder"
-    bidderTaskListUri:
-      type: string
-      description: "To delegate the task to the winner"
-    taskType:
-      type: string
-      description: "Identifies the type of the task to be executed"
+      description: "Identifier of the auction. Should be globally unique"
   messages:
     Auction:
       name: Auction
@@ -57,8 +45,24 @@ components:
         properties:
           auctionId:
             $ref: '#/components/schemas/auctionId'
+          auctionHouseUri:
+            type: string
+            description: "The URI of an auction house"
+          taskUri:
+            type: string
+            description: "The URI of the corresponding task"
           taskType:
-            $ref: '#/components/schemas/taskType'
+            type: string
+            description: "The type of the corresponding task"
+          deadline:
+            type: integer
+            description: "The deadline of the auction in ms after auction start. (e.g., 10'000 means 10s after the start of the auction)"
+          auctionStatus:
+            type: string
+            enum:
+            - OPEN
+            - CLOSED
+            description: "The status of the auction"
     Bid:
       name: Bid
       payload:
@@ -67,8 +71,11 @@ components:
           auctionId:
             $ref: '#/components/schemas/auctionId'
           bidderName:
-            $ref: '#/components/schemas/bidderName'
+            type: string
+            description: "Represents the external entity's name in the format"
           bidderAuctionHouseUri:
-            $ref: '#/components/schemas/bidderAuctionHouseUri'
+            type: string
+            description: "The URI of the bidder's auction house"
           bidderTaskListUri:
-            $ref: '#/components/schemas/bidderTaskListUri'
+            type: string
+            description: "The URI of the bidder's task list"
