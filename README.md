@@ -16,10 +16,10 @@ Defines the uniform HTTP API for the auction and ensures interoperability betwee
      * Identifies the specific auction currently bid on
    * bidderName
      * Represents the external entity's name in the format: "tapas-group1"
-   * bidderAuctionHouseUri
+   * AuctionHouseUri
      * Used to interact with the auction house of the bidder
-   * bidderTaskListUri
-     * To delegate the task to the winner
+   * TaskListUri
+     * To delegate the task to the winner (https://tapas-tasks.your-ip-adress.asse.scs.unisg.ch/)
 
 ### Outgoing Requests:
 
@@ -27,25 +27,21 @@ Defines the uniform HTTP API for the auction and ensures interoperability betwee
    * *Same as body of ReceiveBid*
 
 2. AuctionStarted -> published via MQTT/WebSub
-    * auctionId
-      * The id is created here and published for other parties to bid
-    * taskType
-      * For other parties to know whether they have available executors
+   * publishing AuctionStartedEvent
+   * Event consists of full Auction (see AuctionJsonRepresentation)
+   * * Add new Parameters: AuctionFeedId & InputData
+  
 
-3. DelegateTask -> sent to bidderTaskListUri
-    * taskName
-      * Mandatory field to create a new task. Should be the auctionHouseUri
-    * taskUri
-      * Taken from the auction object and represents the original task (where the response it sent back to)
-    * taskType
-      * The task type for which an executor is needed
-    * inputData
-      * The data to be processed by the external executor
+4. DelegateTask -> sent to bidderTaskListUri
+   * Through AuctionWonEvent receive TaskList of winner (Is in the Bid).
+   * Delegation of Task is normal Task Creation:
+   * * Follows the TaskJsonRepresentation
+   * Field OriginalTaskUri has to be correctly filled out
+   * * This field is used by the external system to send patch updates on your task
 
 ## Service: tapas-tasks
 
 ### Incoming Requests:
 
 1. ReceiveDelegatedTask -> received at bidderTaskListUri
-   * *Same as body of DelegateTask*
-   * **RESULT:** is sent via PATCH directly to taskUri with OutputData
+   * Nothing should change since patch capabilites have been implemented by ronny
